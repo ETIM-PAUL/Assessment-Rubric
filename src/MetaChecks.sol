@@ -28,14 +28,14 @@ contract Orders {
     }
 
     function cancelOrder(uint id) public {
+        if (orderExist[id] == false) {
+            revert("Invalid Order");
+        }
         require(
             allOrders[id]._status < OrderStatus.Shipped,
             "Order Shipped Already"
         );
 
-        if (orderExist[id] == false) {
-            revert("Invalid Order");
-        }
         allOrders[id]._status = OrderStatus.Cancelled;
     }
 
