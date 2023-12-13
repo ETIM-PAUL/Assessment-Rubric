@@ -23,19 +23,20 @@ contract Orders {
     function createOrder(string memory _title) public {
         totalOrders++;
         Order storage newOrder = allOrders[totalOrders];
+        orderExist[totalOrders] = true;
         newOrder.title = _title;
         newOrder.creator = msg.sender;
     }
 
     function cancelOrder(uint id) public {
-        if (orderExist[id] == false) {
-            revert("Invalid Order");
-        }
         require(
             allOrders[id]._status < OrderStatus.Shipped,
             "Order Shipped Already"
         );
 
+        if (orderExist[id] == false) {
+            revert("Invalid Order");
+        }
         allOrders[id]._status = OrderStatus.Cancelled;
     }
 
